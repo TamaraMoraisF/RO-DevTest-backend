@@ -3,18 +3,19 @@ using RO.DevTest.Infrastructure.IoC;
 using RO.DevTest.Persistence.IoC;
 
 namespace RO.DevTest.WebApi;
-    
-public class Program {
-    public static void Main(string[] args) {
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
-
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.InjectPersistenceDependencies(builder.Configuration)
-            .InjectInfrastructureDependencies();
+        builder.Services.InjectPersistenceDependencies(builder.Configuration);
+        builder.Services.InjectInfrastructureDependencies();
 
         builder.Services.AddMediatR(cfg =>
         {
@@ -26,17 +27,15 @@ public class Program {
 
         var app = builder.Build();
 
-        if(app.Environment.IsDevelopment()) {
+        if (app.Environment.IsDevelopment())
+        {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
         app.UseHttpsRedirection();
-
         app.UseAuthorization();
-
         app.MapControllers();
-
         app.Run();
     }
 }
