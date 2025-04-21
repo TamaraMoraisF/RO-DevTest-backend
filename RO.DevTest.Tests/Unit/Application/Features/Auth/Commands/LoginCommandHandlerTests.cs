@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
 using AppUser = RO.DevTest.Domain.Entities.User;
@@ -10,7 +12,6 @@ namespace RO.DevTest.Tests.Unit.Application.Features.Auth.Commands;
 public class LoginCommandHandlerTests
 {
     private readonly Mock<UserManager<AppUser>> _userManagerMock;
-    private readonly Mock<SignInManager<AppUser>> _signInManagerMock;
     private readonly Mock<IConfiguration> _configurationMock;
     private readonly LoginCommandHandler _sut;
 
@@ -19,22 +20,24 @@ public class LoginCommandHandlerTests
         var userStoreMock = new Mock<IUserStore<AppUser>>();
 
         _userManagerMock = new Mock<UserManager<AppUser>>(
-            userStoreMock.Object, null, null, null, null, null, null, null, null);
+            userStoreMock.Object,
+            new Mock<IOptions<IdentityOptions>>().Object,
+            new PasswordHasher<AppUser>(),
+            Array.Empty<IUserValidator<AppUser>>(),
+            Array.Empty<IPasswordValidator<AppUser>>(),
+            new UpperInvariantLookupNormalizer(),
+            new IdentityErrorDescriber(),
+            new Mock<IServiceProvider>().Object,
+            new Mock<ILogger<UserManager<AppUser>>>().Object
+        );
 
         var contextAccessor = new Mock<Microsoft.AspNetCore.Http.IHttpContextAccessor>();
-        var claimsFactory = new Mock<IUserClaimsPrincipalFactory<Domain.Entities.User>>();
-
-        _signInManagerMock = new Mock<SignInManager<AppUser>>(
-            _userManagerMock.Object,
-            contextAccessor.Object,
-            claimsFactory.Object,
-            null, null, null, null);
+        var claimsFactory = new Mock<IUserClaimsPrincipalFactory<AppUser>>();
 
         _configurationMock = new Mock<IConfiguration>();
         _configurationMock.Setup(c => c["Jwt:Key"]).Returns("testing-jwt-key-12345678901234567890123456789012");
 
         _sut = new LoginCommandHandler(
-            _signInManagerMock.Object,
             _userManagerMock.Object,
             _configurationMock.Object);
     }
@@ -44,7 +47,7 @@ public class LoginCommandHandlerTests
     {
         // Arrange
         var command = new LoginCommand { Username = "invalid", Password = "123" };
-        _userManagerMock.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((AppUser)null);
+        _userManagerMock.Setup(m => m.FindByNameAsync(It.IsAny<string>())).ReturnsAsync((AppUser)null!);
 
         // Act
         Func<Task> act = async () => await _sut.Handle(command, new CancellationToken());

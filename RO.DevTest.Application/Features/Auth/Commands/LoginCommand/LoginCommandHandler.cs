@@ -1,16 +1,15 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
 using RO.DevTest.Domain.Entities;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-public class LoginCommandHandler(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResponse>
+public class LoginCommandHandler(UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResponse>
 {
-    private readonly SignInManager<User> _signInManager = signInManager;
     private readonly UserManager<User> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
 
