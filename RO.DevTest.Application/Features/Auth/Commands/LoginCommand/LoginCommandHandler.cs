@@ -1,11 +1,61 @@
-﻿using MediatR;
+﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
+using RO.DevTest.Domain.Entities;
 
-namespace RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
+public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+{
+    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<User> _userManager;
+    private readonly IConfiguration _configuration;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse> {
-    public Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken) {
-        ///[TODO] - CREATE LOGIN HANDLER HERE    
+    public LoginCommandHandler(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration)
+    {
+        _signInManager = signInManager;
+        _userManager = userManager;
+        _configuration = configuration;
+    }
 
-        throw new NotImplementedException();
+    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    {
+        var user = await _userManager.FindByNameAsync(request.Username);
+        if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
+        {
+            throw new UnauthorizedAccessException("Invalid credentials");
+        }
+
+        var roles = await _userManager.GetRolesAsync(user);
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!);
+
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.Name, user.UserName!),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        };
+
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(claims),
+            Expires = DateTime.UtcNow.AddHours(1),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        return new LoginResponse
+        {
+            AccessToken = tokenHandler.WriteToken(token),
+            IssuedAt = DateTime.UtcNow,
+            ExpirationDate = tokenDescriptor.Expires!.Value,
+            Roles = [.. roles]
+        };
     }
 }
