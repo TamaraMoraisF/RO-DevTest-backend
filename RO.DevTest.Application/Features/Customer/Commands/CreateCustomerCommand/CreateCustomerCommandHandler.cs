@@ -11,10 +11,13 @@ public class CreateCustomerCommandHandler(ICustomerRepository customerRepo)
     private readonly ICustomerRepository _customerRepo = customerRepo;
 
     public async Task<CreateCustomerResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
-    {
-        if (string.IsNullOrWhiteSpace(request.Email) || string.IsNullOrWhiteSpace(request.Name))
+    {     
+        var validator = new CreateCustomerCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
         {
-            throw new BadRequestException("Name and Email are required.");
+            throw new BadRequestException(validationResult);
         }
 
         var customer = new CustomerEntity
