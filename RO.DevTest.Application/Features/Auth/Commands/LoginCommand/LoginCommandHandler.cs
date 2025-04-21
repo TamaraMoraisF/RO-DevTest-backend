@@ -8,18 +8,11 @@ using Microsoft.IdentityModel.Tokens;
 using RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
 using RO.DevTest.Domain.Entities;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, LoginResponse>
+public class LoginCommandHandler(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResponse>
 {
-    private readonly SignInManager<User> _signInManager;
-    private readonly UserManager<User> _userManager;
-    private readonly IConfiguration _configuration;
-
-    public LoginCommandHandler(SignInManager<User> signInManager, UserManager<User> userManager, IConfiguration configuration)
-    {
-        _signInManager = signInManager;
-        _userManager = userManager;
-        _configuration = configuration;
-    }
+    private readonly SignInManager<User> _signInManager = signInManager;
+    private readonly UserManager<User> _userManager = userManager;
+    private readonly IConfiguration _configuration = configuration;
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
