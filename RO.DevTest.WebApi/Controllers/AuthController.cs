@@ -10,7 +10,7 @@ namespace RO.DevTest.WebApi.Controllers;
 [Route("api/auth")]
 [OpenApiTags("Auth")]
 [ApiController]
-public class AuthController(IMediator mediator) : ControllerBase
+public class AuthController(IMediator mediator) : Controller
 {
     private readonly IMediator _mediator = mediator;
 

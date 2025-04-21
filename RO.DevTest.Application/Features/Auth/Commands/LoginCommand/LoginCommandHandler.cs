@@ -2,15 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
-using RO.DevTest.Domain.Entities;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using AppUser = RO.DevTest.Domain.Entities.User;
 
-public class LoginCommandHandler(UserManager<User> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResponse>
+namespace RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
+public class LoginCommandHandler(UserManager<AppUser> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResponse>
 {
-    private readonly UserManager<User> _userManager = userManager;
+    private readonly UserManager<AppUser> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
 
     public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
