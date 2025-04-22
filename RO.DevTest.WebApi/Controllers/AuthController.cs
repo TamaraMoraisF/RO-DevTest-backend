@@ -17,14 +17,7 @@ public class AuthController(IMediator mediator) : Controller
     [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login([FromBody] LoginCommand request)
     {
-        try
-        {
-            var result = await _mediator.Send(request);
-            return Ok(result);
-        }
-        catch (UnauthorizedAccessException ex)
-        {
-            return Unauthorized(new { error = ex.Message });
-        }
+        var result = await _mediator.Send(request);
+        return Ok(result);
     }
 }

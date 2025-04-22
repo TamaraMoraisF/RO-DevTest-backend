@@ -1,6 +1,7 @@
 using RO.DevTest.Application;
 using RO.DevTest.Infrastructure.IoC;
 using RO.DevTest.Persistence.IoC;
+using RO.DevTest.WebApi.Middlewares;
 
 namespace RO.DevTest.WebApi;
 
@@ -32,6 +33,8 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         app.UseHttpsRedirection();
         app.UseAuthorization();
