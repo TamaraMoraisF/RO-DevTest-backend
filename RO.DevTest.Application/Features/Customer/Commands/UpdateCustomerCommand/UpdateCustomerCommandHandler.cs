@@ -23,7 +23,7 @@ public class UpdateCustomerCommandHandler(ICustomerRepository customerRepo)
         existing.Name = request.Name;
         existing.Email = request.Email;
 
-        _customerRepo.Update(existing);
+        await _customerRepo.Update(existing, cancellationToken);
 
         return new UpdateCustomerResult(
             Id: existing.Id.ToString(),

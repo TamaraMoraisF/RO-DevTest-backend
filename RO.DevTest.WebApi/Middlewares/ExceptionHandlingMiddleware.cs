@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using RO.DevTest.Domain.Exception;
+﻿using RO.DevTest.Domain.Exception;
 using System.Net;
 using System.Text.Json;
 

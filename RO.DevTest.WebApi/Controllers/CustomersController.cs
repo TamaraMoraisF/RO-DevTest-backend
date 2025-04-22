@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using RO.DevTest.Application.Features.Customer.Commands.CreateCustomerCommand;
+using RO.DevTest.Application.Features.Customer.Commands.DeleteCustomerCommand;
 using RO.DevTest.Application.Features.Customer.Commands.UpdateCustomerCommand;
 
 namespace RO.DevTest.WebApi.Controllers;
@@ -34,5 +35,14 @@ public class CustomersController(IMediator mediator) : Controller
 
         var result = await _mediator.Send(command);
         return Ok(result);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> Delete(Guid id)
+    {
+        await _mediator.Send(new DeleteCustomerCommand { Id = id });
+        return NoContent();
     }
 }
