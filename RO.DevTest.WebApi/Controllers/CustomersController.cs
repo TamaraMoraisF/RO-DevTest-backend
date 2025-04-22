@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using RO.DevTest.Application.Features.Customer.Commands.CreateCustomerCommand;
@@ -7,9 +8,9 @@ using RO.DevTest.Application.Features.Customer.Commands.UpdateCustomerCommand;
 
 namespace RO.DevTest.WebApi.Controllers;
 
+[Authorize(Roles = "Admin")]
 [Route("api/customers")]
 [ApiController]
-[OpenApiTags("Customers")]
 public class CustomersController(IMediator mediator) : Controller
 {
     private readonly IMediator _mediator = mediator;

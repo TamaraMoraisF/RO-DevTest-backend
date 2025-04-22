@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
@@ -12,6 +13,7 @@ public class AuthController(IMediator mediator) : Controller
 {
     private readonly IMediator _mediator = mediator;
 
+    [AllowAnonymous]
     [HttpPost("login")]
     [ProducesResponseType(typeof(LoginResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status401Unauthorized)]
