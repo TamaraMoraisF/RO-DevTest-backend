@@ -7,9 +7,10 @@ public class UpdateCustomerCommandValidator : AbstractValidator<UpdateCustomerWi
     public UpdateCustomerCommandValidator()
     {
         RuleFor(c => c.Name)
-            .NotEmpty().WithMessage("O campo nome é obrigatório");
+            .NotEmpty().WithMessage("The name field is required.");
+
         RuleFor(c => c.Email)
-            .NotEmpty().WithMessage("O campo e-mail é obrigatório")
-            .EmailAddress().WithMessage("O campo e-mail precisa ser um e-mail válido");
+            .NotEmpty().WithMessage("The email field is required.")
+            .EmailAddress().WithMessage("The email field must be a valid email address.");
     }
 }

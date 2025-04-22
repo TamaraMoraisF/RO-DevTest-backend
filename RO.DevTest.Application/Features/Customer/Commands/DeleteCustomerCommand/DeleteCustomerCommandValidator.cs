@@ -8,6 +8,6 @@ public class DeleteCustomerCommandValidator : AbstractValidator<DeleteCustomerCo
     {
         RuleFor(c => c.Id)
             .NotEmpty()
-            .WithMessage("O campo ID é obrigatório");
+            .WithMessage("The ID field is required.");
     }
 }

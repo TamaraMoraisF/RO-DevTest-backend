@@ -8,12 +8,12 @@ public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCo
     {
         RuleFor(c => c.Name)
             .NotEmpty()
-            .WithMessage("O campo nome é obrigatório");
+            .WithMessage("The name field is required.");
 
         RuleFor(c => c.Email)
             .NotEmpty()
-            .WithMessage("O campo e-mail é obrigatório")
+            .WithMessage("The email field is required.")
             .EmailAddress()
-            .WithMessage("O campo e-mail precisa ser um e-mail válido");
+            .WithMessage("The email field must contain a valid email address.");
     }
 }
