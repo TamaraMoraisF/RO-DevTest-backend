@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 using RO.DevTest.Application.Features.Customer.Commands.CreateCustomerCommand;
+using RO.DevTest.Application.Features.Customer.Commands.UpdateCustomerCommand;
 
 namespace RO.DevTest.WebApi.Controllers;
 
@@ -18,5 +19,20 @@ public class CustomersController(IMediator mediator) : Controller
     {
         var result = await _mediator.Send(request);
         return CreatedAtAction(nameof(Create), result);
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(typeof(UpdateCustomerResult), StatusCodes.Status200OK)]
+    public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerCommand request)
+    {
+        var command = new UpdateCustomerWithIdCommand
+        {
+            Id = id,
+            Name = request.Name,
+            Email = request.Email
+        };
+
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 }
