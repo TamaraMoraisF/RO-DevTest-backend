@@ -10,7 +10,9 @@ public class DefaultContext : IdentityDbContext<User>
 
     public DefaultContext(DbContextOptions<DefaultContext> options) : base(options) { }
 
-    public DbSet<Customer> Customers { get; set; } 
+    public DbSet<Customer> Customers { get; set; }
+
+    public DbSet<Product> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
