@@ -23,6 +23,7 @@ public static class PersistenceDependencyInjector {
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ISaleRepository, SaleRepository>();
 
         return services;
     }

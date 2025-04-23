@@ -14,6 +14,10 @@ public class DefaultContext : IdentityDbContext<User>
 
     public DbSet<Product> Products { get; set; }
 
+    public DbSet<Sale> Sales { get; set; }
+
+    public DbSet<SaleItem> SaleItems { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.HasPostgresExtension("uuid-ossp");
