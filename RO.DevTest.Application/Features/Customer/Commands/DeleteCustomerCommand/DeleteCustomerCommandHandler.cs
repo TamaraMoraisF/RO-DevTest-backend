@@ -13,7 +13,7 @@ public class DeleteCustomerCommandHandler(ICustomerRepository customerRepo)
     public async Task<Unit> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
     {
         var existing = _customerRepo.Get(c => c.Id == request.Id) ?? throw new NotFoundException(nameof(Customer), request.Id);
-        await _customerRepo.Delete(existing);
+        await _customerRepo.Delete(existing, cancellationToken);
         return Unit.Value;
     }
 }
