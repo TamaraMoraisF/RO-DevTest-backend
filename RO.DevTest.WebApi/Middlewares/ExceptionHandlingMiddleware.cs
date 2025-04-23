@@ -26,6 +26,19 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
 
             await context.Response.WriteAsync(JsonSerializer.Serialize(response));
         }
+        catch (NotFoundException ex)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            context.Response.ContentType = "application/json";
+
+            var response = new
+            {
+                title = "Not Found",
+                detail = ex.Message
+            };
+
+            await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        }
         catch (UnauthorizedAccessException ex)
         {
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
