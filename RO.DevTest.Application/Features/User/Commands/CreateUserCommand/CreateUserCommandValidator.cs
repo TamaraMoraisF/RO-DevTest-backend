@@ -1,23 +1,26 @@
 ﻿using FluentValidation;
 
 namespace RO.DevTest.Application.Features.User.Commands.CreateUserCommand;
-public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>{
-    public CreateUserCommandValidator() {
+
+public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+{
+    public CreateUserCommandValidator()
+    {
         RuleFor(cpau => cpau.Email)
             .NotNull()
             .NotEmpty()
-            .WithMessage("O campo e-mail precisa ser preenchido");
+            .WithMessage("The email field must be filled.");
 
         RuleFor(cpau => cpau.Email)
             .EmailAddress()
-            .WithMessage("O campo e-mail precisa ser um e-mail válido");
+            .WithMessage("The email field must be a valid email address.");
 
         RuleFor(cpau => cpau.Password)
             .MinimumLength(6)
-            .WithMessage("O campo senha precisa ter, pelo menos, 6 caracteres");
+            .WithMessage("The password must be at least 6 characters long.");
 
         RuleFor(cpau => cpau.PasswordConfirmation)
             .Matches(cpau => cpau.Password)
-            .WithMessage("O campo de confirmação de senha deve ser igual ao campo senha");
+            .WithMessage("The password confirmation must match the password field.");
     }
 }

@@ -15,14 +15,16 @@ public class BaseRepository<T>(DefaultContext defaultContext) : IBaseRepository<
         return entity;
     }
 
-    public async void Update(T entity) {
+    public async Task Update(T entity, CancellationToken cancellationToken = default)
+    {
         Context.Set<T>().Update(entity);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(cancellationToken);
     }
 
-    public async void Delete(T entity) {
+    public async Task Delete(T entity, CancellationToken cancellationToken = default)
+    {
         Context.Set<T>().Remove(entity);
-        await Context.SaveChangesAsync();
+        await Context.SaveChangesAsync(cancellationToken);
     }
 
     public T? Get(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)

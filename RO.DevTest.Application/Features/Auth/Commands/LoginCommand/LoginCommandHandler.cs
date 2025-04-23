@@ -8,12 +8,12 @@ using System.Text;
 using AppUser = RO.DevTest.Domain.Entities.User;
 
 namespace RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
-public class LoginCommandHandler(UserManager<AppUser> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResponse>
+public class LoginCommandHandler(UserManager<AppUser> userManager, IConfiguration configuration) : IRequestHandler<LoginCommand, LoginResult>
 {
     private readonly UserManager<AppUser> _userManager = userManager;
     private readonly IConfiguration _configuration = configuration;
 
-    public async Task<LoginResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<LoginResult> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager.FindByNameAsync(request.Username);
         if (user == null || !await _userManager.CheckPasswordAsync(user, request.Password))
@@ -42,7 +42,7 @@ public class LoginCommandHandler(UserManager<AppUser> userManager, IConfiguratio
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
-        return new LoginResponse
+        return new LoginResult
         {
             AccessToken = tokenHandler.WriteToken(token),
             IssuedAt = DateTime.UtcNow,
