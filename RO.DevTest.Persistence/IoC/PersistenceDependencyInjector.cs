@@ -22,6 +22,7 @@ public static class PersistenceDependencyInjector {
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
 
         return services;
     }
