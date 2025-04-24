@@ -3,4 +3,14 @@ using RO.DevTest.Domain.Entities;
 
 namespace RO.DevTest.Persistence.Repositories;
 
-public class CustomerRepository(DefaultContext context) : BaseRepository<Customer>(context), ICustomerRepository{ }
+public class CustomerRepository : BaseRepository<Customer>, ICustomerRepository
+{
+    private readonly DefaultContext _context;
+
+    public CustomerRepository(DefaultContext context) : base(context) => _context = context;
+
+    public IQueryable<Customer> Query()
+    {
+        return _context.Set<Customer>().AsQueryable();
+    }
+}
