@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using RO.DevTest.Application.Features.Customer.Commands.CreateCustomerCommand;
 using RO.DevTest.Application.Features.Customer.Commands.DeleteCustomerCommand;
 using RO.DevTest.Application.Features.Customer.Commands.UpdateCustomerCommand;
-using RO.DevTest.Application.Features.Queries.GetPagedCustomers;
+using RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
 using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using RO.DevTest.Application.Models;
 
-namespace RO.DevTest.Application.Features.Queries.GetPagedCustomers;
+namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
 
 public class GetPagedCustomersQuery : IRequest<PagedResult<CustomerResult>>
 {

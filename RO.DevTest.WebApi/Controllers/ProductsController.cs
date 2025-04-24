@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using RO.DevTest.Application.Features.Product.Commands.CreateProductCommand;
 using RO.DevTest.Application.Features.Product.Commands.DeleteProductCommand;
 using RO.DevTest.Application.Features.Product.Commands.UpdateProductCommand;
+using RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
+using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;
 
@@ -44,5 +46,13 @@ public class ProductsController(IMediator mediator) : Controller
     {
         await _mediator.Send(new DeleteProductCommand { Id = id });
         return NoContent();
+    }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PagedResult<ProductResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPaged([FromQuery] GetPagedProductsQuery request)
+    {
+        var result = await _mediator.Send(request);
+        return Ok(result);
     }
 }

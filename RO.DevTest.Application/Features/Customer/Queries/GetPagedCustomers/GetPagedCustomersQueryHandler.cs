@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
-using RO.DevTest.Application.Features.Queries.GetPagedCustomers;
 using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;

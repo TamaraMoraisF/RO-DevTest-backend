@@ -2,10 +2,9 @@
 using Moq;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
-using RO.DevTest.Application.Features.Queries.GetPagedCustomers;
 using CustomerEntity = RO.DevTest.Domain.Entities.Customer;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Customer.Queries.GetPagedCustomers;
+namespace RO.DevTest.Tests.Unit.Application.Features.Customer.Queries;
 
 public class GetPagedCustomersQueryHandlerTests
 {

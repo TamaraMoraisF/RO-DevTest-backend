@@ -1,4 +1,4 @@
-﻿namespace RO.DevTest.Application.Features.Queries.GetPagedCustomers;
+﻿namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
 
 public class CustomerResult
 {
