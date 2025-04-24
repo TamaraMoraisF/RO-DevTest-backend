@@ -11,7 +11,7 @@ namespace RO.DevTest.Domain.Entities
 
         public DateTime SaleDate { get; set; } = DateTime.UtcNow;
 
-        public ICollection<SaleItem> Items { get; set; } = new List<SaleItem>();
+        public ICollection<SaleItem> Items { get; set; } = [];
 
         public decimal TotalAmount => Items.Sum(i => i.Quantity * i.UnitPrice);
     }
