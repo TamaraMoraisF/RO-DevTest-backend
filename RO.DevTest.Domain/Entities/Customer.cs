@@ -1,5 +1,8 @@
-﻿namespace RO.DevTest.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
+namespace RO.DevTest.Domain.Entities;
+
+[Table("AspNetCustomers")]
 public class Customer
 {
     public Guid Id { get; set; } = Guid.NewGuid();

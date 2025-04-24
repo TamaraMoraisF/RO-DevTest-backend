@@ -1,14 +1,18 @@
-﻿namespace RO.DevTest.Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-public class Sale
+namespace RO.DevTest.Domain.Entities
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    [Table("AspNetSales")]
+    public class Sale
+    {
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-    public Guid CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
 
-    public DateTime SaleDate { get; set; } = DateTime.UtcNow;
+        public DateTime SaleDate { get; set; } = DateTime.UtcNow;
 
-    public ICollection<SaleItem> Items { get; set; } = new List<SaleItem>();
+        public ICollection<SaleItem> Items { get; set; } = new List<SaleItem>();
 
-    public decimal TotalAmount => Items.Sum(i => i.Quantity * i.UnitPrice);
+        public decimal TotalAmount => Items.Sum(i => i.Quantity * i.UnitPrice);
+    }
 }
