@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using RO.DevTest.Persistence;
@@ -11,9 +12,11 @@ using RO.DevTest.Persistence;
 namespace RO.DevTest.Persistence.Migrations
 {
     [DbContext(typeof(DefaultContext))]
-    partial class DefaultContextModelSnapshot : ModelSnapshot
+    [Migration("20250423222201_RenameSalesTables")]
+    partial class RenameSalesTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -206,9 +209,7 @@ namespace RO.DevTest.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Sales");
+                    b.ToTable("AspNetSales");
                 });
 
             modelBuilder.Entity("RO.DevTest.Domain.Entities.SaleItem", b =>
@@ -231,11 +232,9 @@ namespace RO.DevTest.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
                     b.HasIndex("SaleId");
 
-                    b.ToTable("SaleItems");
+                    b.ToTable("AspNetSaleItems");
                 });
 
             modelBuilder.Entity("RO.DevTest.Domain.Entities.User", b =>
@@ -357,23 +356,8 @@ namespace RO.DevTest.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RO.DevTest.Domain.Entities.Sale", b =>
-                {
-                    b.HasOne("RO.DevTest.Domain.Entities.Customer", null)
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RO.DevTest.Domain.Entities.SaleItem", b =>
                 {
-                    b.HasOne("RO.DevTest.Domain.Entities.Product", null)
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RO.DevTest.Domain.Entities.Sale", null)
                         .WithMany("Items")
                         .HasForeignKey("SaleId")
