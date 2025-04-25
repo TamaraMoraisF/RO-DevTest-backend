@@ -4,4 +4,5 @@ namespace RO.DevTest.Application.Contracts.Persistance.Repositories;
 
 public interface ISaleRepository : IBaseRepository<Sale>
 {
+    IQueryable<Sale> Query(); 
 }

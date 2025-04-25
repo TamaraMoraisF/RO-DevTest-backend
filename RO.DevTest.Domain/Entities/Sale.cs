@@ -11,5 +11,7 @@
         public ICollection<SaleItem> Items { get; set; } = [];
 
         public decimal TotalAmount => Items.Sum(i => i.Quantity * i.UnitPrice);
+
+        public Customer Customer { get; set; } = null!;
     }
 }

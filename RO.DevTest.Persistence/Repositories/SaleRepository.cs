@@ -5,4 +5,6 @@ namespace RO.DevTest.Persistence.Repositories;
 
 public class SaleRepository(DefaultContext context)
     : BaseRepository<Sale>(context), ISaleRepository
-{ }
+{
+    public IQueryable<Sale> Query() => Context.Set<Sale>();
+}
