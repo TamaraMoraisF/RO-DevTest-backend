@@ -17,8 +17,7 @@ public class GetPagedSalesQueryHandler(ISaleRepository saleRepo)
             .Include(s => s.Items)
                 .ThenInclude(i => i.Product);
 
-        var totalItems = await query.CountAsync(cancellationToken);
-        var list = await query.ToListAsync(cancellationToken);
+        var list = query.ToList();
 
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
@@ -39,6 +38,8 @@ public class GetPagedSalesQueryHandler(ISaleRepository saleRepo)
                 _ => list
             };
         }
+
+        var totalItems = list.Count;
 
         var items = list
             .Skip((request.Page - 1) * request.PageSize)
