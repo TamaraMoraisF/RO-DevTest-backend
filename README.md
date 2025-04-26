@@ -1,21 +1,91 @@
-# Rota das Oficinas Tecnical Test
-This project is the template to be used to create a basic e-commerce Web API.
-It already contains the basic structure of a API, that must be followed when adding more features.
+# RO.DevTest
+This project is a RESTful API developed in ASP.NET Core, designed to manage customers, products, and sales. It fulfills the requirements of the Rota das Oficinas technical test, including JWT authentication, role-based access control, pagination, sorting, and sales analytics.
 
-Some caracteristics of this template that  are:
+## 🧩Features
 
-- Built using .NET 8.0
-- Uses EntityFramework Core as it's ORM
-- Follows the [CQRS Pattern](https://learn.microsoft.com/en-us/azure/architecture/patterns/cqrs) and [Repository Pattern](https://learn.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design)
-- Uses PostgreSql as it's database engine
-- Uses Xunit, Bogus and FluentAssertions to create tests
+- **CRUD for Customers, Products, and Sales:** Endpoints to create, read, update, and delete records.
+- **Authentication and Authorization:** JWT-based authentication with role-based access (`Admin` and `Customer`).
+- **Pagination and Sorting:** Support for pagination and sorting on listing endpoints.
+- **Sales Analytics:** Endpoint to retrieve sales analysis for a given period, including total sales, total revenue, and revenue breakdown per product.
+- **Validation:** Input validation using FluentValidation.
+- **Unit Tests:** Unit test coverage for command handlers and validators.
 
-## To Dos in the Project
-In the template there are some left unfinnished features that you must do to correctly create the API. Search **[TODO]**  to find theses features.
+## ⚙️ Technologies Used
 
-## Feel Free to Optimize or Refactor
-If you find some code that you think can be enhanced, feel free to refactor it. But the refactor should follow the patterns of the project. Also the refactor should be separeted onn it's own commit.
+- .NET 8
+- Entity Framework Core
+- MediatR
+- FluentValidation
+- xUnit & Moq
+- Swagger
 
-## Creating a FrontEnd
-When creating the frontend you can choose any framework you want, but your application must connect with the Web API via HTTP requests, and it's code must be in the same repository as the Web API.
+## 🔐 Authentication and Authorization
 
+Authentication is done using JWT tokens. There are two types of users:
+
+- **Admin:** Full access to all API resources.
+- **Customer:** Limited access to specific endpoints.
+
+### Example of a JWT Token
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "issuedAt": "2025-04-26T04:20:03.3838221Z",
+  "expirationDate": "2025-04-26T05:20:03.3424569Z",
+  "roles": [
+    "Customer"
+  ]
+}
+```
+
+## 📄 API Documentation
+Interactive API documentation is available via Swagger:
+``` bash
+https://localhost:7014/swagger
+```
+![alt text](image.png)
+
+## 🧪 Running Tests
+Unit tests are located in the `RO.DevTest.Tests.Unit` project. To run them:
+
+``` bash
+dotnet test
+```
+
+## 📦 Running the Project
+
+1. Clone the repository:
+``` bash
+git clone https://github.com/TamaraMoraisF/RO.DevTest.git
+```
+
+2. Navigate to the project folder:
+
+``` bash
+cd RO.DevTest
+```
+
+3. Restore dependencies:
+
+``` bash
+dotnet restore
+```
+
+4. Apply database migrations:
+
+``` bash
+dotnet ef database update
+```
+
+5. Start the application:
+
+``` bash
+dotnet run --project RO.DevTest.WebApi
+```
+
+The application will be available at `https://localhost:7014`.
+
+## 📝 Notes
+
+- Make sure to configure the database connection string in the `appsettings.json` file.
+- To authenticate in Swagger, click "Authorize" and insert the JWT token using the format: `Bearer {your_token}`.

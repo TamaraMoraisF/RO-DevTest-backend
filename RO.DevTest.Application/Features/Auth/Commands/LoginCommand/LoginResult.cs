@@ -2,7 +2,7 @@
 
 namespace RO.DevTest.Application.Features.Auth.Commands.LoginCommand;
 
-public record LoginResponse {
+public record LoginResult {
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? AccessToken { get; set; } = null;
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

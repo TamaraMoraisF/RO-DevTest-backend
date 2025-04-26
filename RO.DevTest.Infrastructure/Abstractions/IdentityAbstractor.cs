@@ -10,20 +10,14 @@ namespace RO.DevTest.Infrastructure.Abstractions;
 /// This is a abstraction of the Identity library, creating methods that will interact with 
 /// it to create and update users
 /// </summary>
-public class IdentityAbstractor : IIdentityAbstractor {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-    public IdentityAbstractor(
-        UserManager<User> userManager,
-        SignInManager<User> signInManager,
-        RoleManager<IdentityRole> roleManager
-    ) {
-        _userManager = userManager;
-        _signInManager = signInManager;
-        _roleManager = roleManager;
-    }
+public class IdentityAbstractor(
+    UserManager<User> userManager,
+    SignInManager<User> signInManager,
+    RoleManager<IdentityRole> roleManager
+    ) : IIdentityAbstractor {
+    private readonly UserManager<User> _userManager = userManager;
+    private readonly SignInManager<User> _signInManager = signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager = roleManager;
 
     public async Task<User?> FindUserByEmailAsync(string email) => await _userManager.FindByEmailAsync(email);
 
