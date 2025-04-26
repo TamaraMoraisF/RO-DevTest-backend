@@ -4,12 +4,12 @@ using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
 
-public class GetPagedCustomersQueryHandler(ICustomerRepository customerRepo)
-    : IRequestHandler<GetPagedCustomersQuery, PagedResult<CustomerResult>>
+public class GetPagedCustomersCommandHandler(ICustomerRepository customerRepo)
+    : IRequestHandler<GetPagedCustomersCommand, PagedResult<CustomerResult>>
 {
     private readonly ICustomerRepository _customerRepo = customerRepo;
 
-    public async Task<PagedResult<CustomerResult>> Handle(GetPagedCustomersQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<CustomerResult>> Handle(GetPagedCustomersCommand request, CancellationToken cancellationToken)
     {
         var query = _customerRepo.Query();
 

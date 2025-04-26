@@ -6,12 +6,12 @@ using ProductEntity = RO.DevTest.Domain.Entities.Product;
 
 namespace RO.DevTest.Tests.Unit.Application.Features.Product.Queries;
 
-public class GetPagedProductsQueryHandlerTests
+public class GetPagedProductsCommandHandlerTests
 {
     private readonly Mock<IProductRepository> _productRepoMock;
-    private readonly GetPagedProductsQueryHandler _handler;
+    private readonly GetPagedProductsCommandHandler _handler;
 
-    public GetPagedProductsQueryHandlerTests()
+    public GetPagedProductsCommandHandlerTests()
     {
         _productRepoMock = new();
 
@@ -27,13 +27,13 @@ public class GetPagedProductsQueryHandlerTests
         _productRepoMock.Setup(repo => repo.Query())
             .Returns(fakeData);
 
-        _handler = new GetPagedProductsQueryHandler(_productRepoMock.Object);
+        _handler = new GetPagedProductsCommandHandler(_productRepoMock.Object);
     }
 
     [Fact(DisplayName = "Given search 'note', when querying, should return filtered products")]
     public async Task Handle_GivenSearchTerm_ShouldFilterProducts()
     {
-        var query = new GetPagedProductsQuery
+        var query = new GetPagedProductsCommand
         {
             Search = "note",
             Page = 1,
@@ -49,7 +49,7 @@ public class GetPagedProductsQueryHandlerTests
     [Fact(DisplayName = "Given Page = 1 and PageSize = 2, should return first 2 items")]
     public async Task Handle_GivenPaginationPage1_ShouldReturnFirstItems()
     {
-        var query = new GetPagedProductsQuery
+        var query = new GetPagedProductsCommand
         {
             Page = 1,
             PageSize = 2
@@ -66,7 +66,7 @@ public class GetPagedProductsQueryHandlerTests
     [Fact(DisplayName = "Given Page = 2 and PageSize = 2, should return remaining products")]
     public async Task Handle_GivenPaginationPage2_ShouldReturnNextItems()
     {
-        var query = new GetPagedProductsQuery
+        var query = new GetPagedProductsCommand
         {
             Page = 2,
             PageSize = 2
@@ -83,7 +83,7 @@ public class GetPagedProductsQueryHandlerTests
     [Fact(DisplayName = "Given SortBy 'name' ascending, should return sorted result")]
     public async Task Handle_GivenSortByNameAsc_ShouldSortCorrectly()
     {
-        var query = new GetPagedProductsQuery
+        var query = new GetPagedProductsCommand
         {
             SortBy = "name",
             Descending = false,
@@ -99,7 +99,7 @@ public class GetPagedProductsQueryHandlerTests
     [Fact(DisplayName = "Given SortBy 'price' descending, should return sorted result")]
     public async Task Handle_GivenSortByPriceDesc_ShouldSortCorrectly()
     {
-        var query = new GetPagedProductsQuery
+        var query = new GetPagedProductsCommand
         {
             SortBy = "price",
             Descending = true,

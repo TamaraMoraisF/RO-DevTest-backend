@@ -5,12 +5,12 @@ using RO.DevTest.Application.Contracts.Persistance.Repositories;
 
 namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
 
-public class GetSalesAnalyticsQueryHandler(ISaleRepository saleRepo)
-    : IRequestHandler<GetSalesAnalyticsQuery, SalesAnalyticsResult>
+public class GetSalesAnalyticsCommandHandler(ISaleRepository saleRepo)
+    : IRequestHandler<GetSalesAnalyticsCommand, SalesAnalyticsResult>
 {
     private readonly ISaleRepository _saleRepo = saleRepo;
 
-    public async Task<SalesAnalyticsResult> Handle(GetSalesAnalyticsQuery request, CancellationToken cancellationToken)
+    public async Task<SalesAnalyticsResult> Handle(GetSalesAnalyticsCommand request, CancellationToken cancellationToken)
     {
         var startDateUtc = DateTime.SpecifyKind(request.Start, DateTimeKind.Utc);
         var endDateUtc = DateTime.SpecifyKind(request.End, DateTimeKind.Utc);

@@ -3,7 +3,7 @@ using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
 
-public class GetPagedProductsQuery : IRequest<PagedResult<ProductResult>>
+public class GetPagedProductsCommand : IRequest<PagedResult<ProductResult>>
 {
     public string? Search { get; set; }
     public string? SortBy { get; set; }

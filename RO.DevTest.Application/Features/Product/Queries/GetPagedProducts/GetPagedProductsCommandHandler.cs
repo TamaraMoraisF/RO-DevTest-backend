@@ -4,12 +4,12 @@ using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
 
-public class GetPagedProductsQueryHandler(IProductRepository productRepo)
-    : IRequestHandler<GetPagedProductsQuery, PagedResult<ProductResult>>
+public class GetPagedProductsCommandHandler(IProductRepository productRepo)
+    : IRequestHandler<GetPagedProductsCommand, PagedResult<ProductResult>>
 {
     private readonly IProductRepository _productRepo = productRepo;
 
-    public async Task<PagedResult<ProductResult>> Handle(GetPagedProductsQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<ProductResult>> Handle(GetPagedProductsCommand request, CancellationToken cancellationToken)
     {
         var query = _productRepo.Query();
 

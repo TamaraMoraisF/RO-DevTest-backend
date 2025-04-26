@@ -24,17 +24,10 @@ public class SalesController(IMediator mediator) : Controller
 
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<SaleResult>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPaged([FromQuery] GetPagedSalesQuery request)
+    public async Task<IActionResult> GetPaged([FromQuery] GetPagedSalesCommand request)
     {
         var result = await _mediator.Send(request);
         return Ok(result);
     }
 
-    [HttpGet("analytics")]
-    [ProducesResponseType(typeof(SalesAnalyticsResult), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAnalytics([FromQuery] DateTime start, [FromQuery] DateTime end)
-    {
-        var result = await _mediator.Send(new GetSalesAnalyticsQuery(start, end));
-        return Ok(result);
-    }
 }

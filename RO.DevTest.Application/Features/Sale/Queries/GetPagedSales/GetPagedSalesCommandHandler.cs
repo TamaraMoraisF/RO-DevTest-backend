@@ -5,12 +5,12 @@ using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
 
-public class GetPagedSalesQueryHandler(ISaleRepository saleRepo)
-    : IRequestHandler<GetPagedSalesQuery, PagedResult<SaleResult>>
+public class GetPagedSalesCommandHandler(ISaleRepository saleRepo)
+    : IRequestHandler<GetPagedSalesCommand, PagedResult<SaleResult>>
 {
     private readonly ISaleRepository _saleRepo = saleRepo;
 
-    public async Task<PagedResult<SaleResult>> Handle(GetPagedSalesQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<SaleResult>> Handle(GetPagedSalesCommand request, CancellationToken cancellationToken)
     {
         var query = _saleRepo.Query()
             .Include(s => s.Customer)

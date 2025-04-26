@@ -8,12 +8,12 @@ using SaleEntity = RO.DevTest.Domain.Entities.Sale;
 
 namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Queries;
 
-public class GetPagedSalesQueryHandlerTests
+public class GetPagedSalesCommandHandlerTests
 {
     private readonly Mock<ISaleRepository> _saleRepoMock;
-    private readonly GetPagedSalesQueryHandler _handler;
+    private readonly GetPagedSalesCommandHandler _handler;
 
-    public GetPagedSalesQueryHandlerTests()
+    public GetPagedSalesCommandHandlerTests()
     {
         _saleRepoMock = new();
 
@@ -51,13 +51,13 @@ public class GetPagedSalesQueryHandlerTests
 
         _saleRepoMock.Setup(r => r.Query()).Returns(fakeSales);
 
-        _handler = new GetPagedSalesQueryHandler(_saleRepoMock.Object);
+        _handler = new GetPagedSalesCommandHandler(_saleRepoMock.Object);
     }
 
     [Fact(DisplayName = "Given sales, when paginating, should return correct page")]
     public async Task Handle_WhenPaginating_ShouldReturnCorrectPage()
     {
-        var query = new GetPagedSalesQuery
+        var query = new GetPagedSalesCommand
         {
             Page = 1,
             PageSize = 2
@@ -74,7 +74,7 @@ public class GetPagedSalesQueryHandlerTests
     [Fact(DisplayName = "Given sales, when paginating to page 2, should return remaining items")]
     public async Task Handle_WhenPaginatingToPage2_ShouldReturnRemainingItems()
     {
-        var query = new GetPagedSalesQuery
+        var query = new GetPagedSalesCommand
         {
             Page = 2,
             PageSize = 2
@@ -91,7 +91,7 @@ public class GetPagedSalesQueryHandlerTests
     [Fact(DisplayName = "Given sales, when sorting by customer ascending, should return ordered list")]
     public async Task Handle_WhenSortingByCustomerAsc_ShouldReturnOrdered()
     {
-        var query = new GetPagedSalesQuery
+        var query = new GetPagedSalesCommand
         {
             SortBy = "customer",
             Descending = false,
@@ -107,7 +107,7 @@ public class GetPagedSalesQueryHandlerTests
     [Fact(DisplayName = "Given sales, when sorting by sale date descending, should return ordered list")]
     public async Task Handle_WhenSortingBySaleDateDesc_ShouldReturnOrdered()
     {
-        var query = new GetPagedSalesQuery
+        var query = new GetPagedSalesCommand
         {
             SortBy = "saledate",
             Descending = true,
@@ -123,7 +123,7 @@ public class GetPagedSalesQueryHandlerTests
     [Fact(DisplayName = "Given sales, when sorting by total descending, should return ordered list")]
     public async Task Handle_WhenSortingByTotalDesc_ShouldReturnOrdered()
     {
-        var query = new GetPagedSalesQuery
+        var query = new GetPagedSalesCommand
         {
             SortBy = "total",
             Descending = true,
