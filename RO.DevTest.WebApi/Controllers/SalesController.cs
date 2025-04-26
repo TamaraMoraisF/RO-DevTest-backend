@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RO.DevTest.Application.Features.Sale.Commands.CreateSaleCommand;
+using RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;
 
@@ -19,4 +21,13 @@ public class SalesController(IMediator mediator) : Controller
         var result = await _mediator.Send(request);
         return CreatedAtAction(nameof(Create), result);
     }
+
+    [HttpGet]
+    [ProducesResponseType(typeof(PagedResult<SaleResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPaged([FromQuery] GetPagedSalesQuery request)
+    {
+        var result = await _mediator.Send(request);
+        return Ok(result);
+    }
+
 }

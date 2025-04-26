@@ -21,19 +21,25 @@ namespace RO.DevTest.Persistence
 
             modelBuilder.HasPostgresExtension("uuid-ossp");
 
+            modelBuilder.Entity<Sale>()
+                .HasOne(s => s.Customer)
+                .WithMany() 
+                .HasForeignKey(s => s.CustomerId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SaleItem>()
+                .HasOne(i => i.Product)
+                .WithMany()
+                .HasForeignKey(i => i.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SaleItem>()
+                .HasOne(i => i.Sale)
+                .WithMany(s => s.Items)
+                .HasForeignKey(i => i.SaleId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(DefaultContext).Assembly);
-
-            modelBuilder.Entity("RO.DevTest.Domain.Entities.Sale")
-                .HasOne("RO.DevTest.Domain.Entities.Customer", null)
-                .WithMany()
-                .HasForeignKey("CustomerId")
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity("RO.DevTest.Domain.Entities.SaleItem")
-                .HasOne("RO.DevTest.Domain.Entities.Product", null)
-                .WithMany()
-                .HasForeignKey("ProductId")
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
