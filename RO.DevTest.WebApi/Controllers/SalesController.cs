@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RO.DevTest.Application.Features.Sale.Commands.CreateSaleCommand;
-using RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+using RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;

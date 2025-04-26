@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using RO.DevTest.Application.Models;
 
-namespace RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
+namespace RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 
-public class GetPagedProductsCommand : IRequest<PagedResult<ProductResult>>
+public class GetPagedCustomersCommand : IRequest<PagedResult<GetPagedCustomerResult>>
 {
     public string? Search { get; set; }
     public string? SortBy { get; set; }

@@ -1,16 +1,16 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Models;
-using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
+namespace RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 
 public class GetPagedCustomersCommandHandler(ICustomerRepository customerRepo)
-    : IRequestHandler<GetPagedCustomersCommand, PagedResult<CustomerResult>>
+    : IRequestHandler<GetPagedCustomersCommand, PagedResult<GetPagedCustomerResult>>
 {
     private readonly ICustomerRepository _customerRepo = customerRepo;
 
-    public async Task<PagedResult<CustomerResult>> Handle(GetPagedCustomersCommand request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetPagedCustomerResult>> Handle(GetPagedCustomersCommand request, CancellationToken cancellationToken)
     {
         var validator = new GetPagedCustomersCommandValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -40,7 +40,7 @@ public class GetPagedCustomersCommandHandler(ICustomerRepository customerRepo)
         var items = query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(c => new CustomerResult
+            .Select(c => new GetPagedCustomerResult
             {
                 Id = c.Id.ToString(),
                 Name = c.Name,
@@ -48,7 +48,7 @@ public class GetPagedCustomersCommandHandler(ICustomerRepository customerRepo)
             })
             .ToList();
 
-        return new PagedResult<CustomerResult>
+        return new PagedResult<GetPagedCustomerResult>
         {
             Page = request.Page,
             PageSize = request.PageSize,

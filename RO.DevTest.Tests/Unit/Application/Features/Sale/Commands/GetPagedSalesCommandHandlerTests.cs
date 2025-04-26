@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using Moq;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
-using RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+using RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 using CustomerEntity = RO.DevTest.Domain.Entities.Customer;
 using ProductEntity = RO.DevTest.Domain.Entities.Product;
 using SaleEntity = RO.DevTest.Domain.Entities.Sale;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Queries;
+namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Commands;
 
 public class GetPagedSalesCommandHandlerTests
 {

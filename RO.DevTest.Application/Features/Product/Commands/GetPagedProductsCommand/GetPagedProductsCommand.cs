@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using RO.DevTest.Application.Models;
 
-namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+namespace RO.DevTest.Application.Features.Product.Commands.GetPagedProductsCommand;
 
-public class GetPagedSalesCommand : IRequest<PagedResult<SaleResult>>
+public class GetPagedProductsCommand : IRequest<PagedResult<GetPagedProductResult>>
 {
+    public string? Search { get; set; }
     public string? SortBy { get; set; }
     public bool Descending { get; set; }
     public int Page { get; set; } = 1;

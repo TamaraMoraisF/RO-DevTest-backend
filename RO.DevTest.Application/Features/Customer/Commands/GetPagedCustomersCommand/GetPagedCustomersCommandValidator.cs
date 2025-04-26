@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
+namespace RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 
 public class GetPagedCustomersCommandValidator : AbstractValidator<GetPagedCustomersCommand>
 {

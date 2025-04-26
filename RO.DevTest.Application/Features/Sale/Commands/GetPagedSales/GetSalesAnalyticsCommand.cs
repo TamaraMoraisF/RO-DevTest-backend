@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+namespace RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 
 public class GetSalesAnalyticsCommand(DateTime start, DateTime end) : IRequest<SalesAnalyticsResult>
 {

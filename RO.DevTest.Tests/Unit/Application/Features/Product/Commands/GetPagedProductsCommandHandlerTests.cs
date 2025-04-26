@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
-using RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
+using RO.DevTest.Application.Features.Product.Commands.GetPagedProductsCommand;
 using ProductEntity = RO.DevTest.Domain.Entities.Product;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Product.Queries;
+namespace RO.DevTest.Tests.Unit.Application.Features.Product.Commands;
 
 public class GetPagedProductsCommandHandlerTests
 {

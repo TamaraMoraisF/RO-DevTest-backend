@@ -4,7 +4,7 @@ using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Models;
 using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+namespace RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 
 public class GetPagedSalesCommandHandler(ISaleRepository saleRepo)
     : IRequestHandler<GetPagedSalesCommand, PagedResult<SaleResult>>

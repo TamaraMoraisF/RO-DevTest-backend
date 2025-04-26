@@ -1,6 +1,6 @@
-﻿namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
+﻿namespace RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 
-public class CustomerResult
+public class GetPagedCustomerResult
 {
     public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;

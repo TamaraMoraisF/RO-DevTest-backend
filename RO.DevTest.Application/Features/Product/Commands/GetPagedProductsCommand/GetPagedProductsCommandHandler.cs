@@ -3,14 +3,14 @@ using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Models;
 using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
+namespace RO.DevTest.Application.Features.Product.Commands.GetPagedProductsCommand;
 
 public class GetPagedProductsCommandHandler(IProductRepository productRepo)
-    : IRequestHandler<GetPagedProductsCommand, PagedResult<ProductResult>>
+    : IRequestHandler<GetPagedProductsCommand, PagedResult<GetPagedProductResult>>
 {
     private readonly IProductRepository _productRepo = productRepo;
 
-    public async Task<PagedResult<ProductResult>> Handle(GetPagedProductsCommand request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetPagedProductResult>> Handle(GetPagedProductsCommand request, CancellationToken cancellationToken)
     {
         var validator = new GetPagedProductsCommandValidator();
         var validationResult = await validator.ValidateAsync(request, cancellationToken);
@@ -41,7 +41,7 @@ public class GetPagedProductsCommandHandler(IProductRepository productRepo)
         var items = query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(p => new ProductResult
+            .Select(p => new GetPagedProductResult
             {
                 Id = p.Id.ToString(),
                 Name = p.Name,
@@ -49,7 +49,7 @@ public class GetPagedProductsCommandHandler(IProductRepository productRepo)
             })
             .ToList();
 
-        return new PagedResult<ProductResult>
+        return new PagedResult<GetPagedProductResult>
         {
             Page = request.Page,
             PageSize = request.PageSize,

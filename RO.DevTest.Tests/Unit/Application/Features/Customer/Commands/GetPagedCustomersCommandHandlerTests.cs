@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using Moq;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
-using RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
+using RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 using CustomerEntity = RO.DevTest.Domain.Entities.Customer;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Customer.Queries;
+namespace RO.DevTest.Tests.Unit.Application.Features.Customer.Commands;
 
 public class GetPagedCustomersCommandHandlerTests
 {

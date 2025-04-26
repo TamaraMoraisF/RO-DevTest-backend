@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+namespace RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 
 public class GetSalesAnalyticsCommandHandler(ISaleRepository saleRepo)
     : IRequestHandler<GetSalesAnalyticsCommand, SalesAnalyticsResult>
