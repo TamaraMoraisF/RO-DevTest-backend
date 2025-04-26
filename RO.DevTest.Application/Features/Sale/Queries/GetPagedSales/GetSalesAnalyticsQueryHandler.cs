@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 
 namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
@@ -14,11 +15,21 @@ public class GetSalesAnalyticsQueryHandler(ISaleRepository saleRepo)
         var startDateUtc = DateTime.SpecifyKind(request.Start, DateTimeKind.Utc);
         var endDateUtc = DateTime.SpecifyKind(request.End, DateTimeKind.Utc);
 
-        var sales = await _saleRepo.Query()
+        var query = _saleRepo.Query()
             .Include(s => s.Items)
                 .ThenInclude(i => i.Product)
-            .Where(s => s.SaleDate >= startDateUtc && s.SaleDate <= endDateUtc)
-            .ToListAsync(cancellationToken);
+            .Where(s => s.SaleDate >= startDateUtc && s.SaleDate <= endDateUtc);
+
+        List<Domain.Entities.Sale> sales;
+
+        if (query.Provider is IAsyncQueryProvider) 
+        {
+            sales = await query.ToListAsync(cancellationToken); 
+        }
+        else
+        {
+            sales = [.. query];
+        }
 
         var totalSales = sales.Count;
         var totalRevenue = sales.Sum(s => s.TotalAmount);

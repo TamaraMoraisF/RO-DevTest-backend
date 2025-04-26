@@ -6,7 +6,7 @@ using CustomerEntity = RO.DevTest.Domain.Entities.Customer;
 using ProductEntity = RO.DevTest.Domain.Entities.Product;
 using SaleEntity = RO.DevTest.Domain.Entities.Sale;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Commands;
+namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Queries;
 
 public class GetPagedSalesQueryHandlerTests
 {
