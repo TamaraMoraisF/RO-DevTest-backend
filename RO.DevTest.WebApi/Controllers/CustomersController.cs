@@ -9,7 +9,6 @@ using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;
 
-[Authorize(Roles = "Admin")]
 [Route("api/customers")]
 [ApiController]
 public class CustomersController(IMediator mediator) : Controller
@@ -17,6 +16,7 @@ public class CustomersController(IMediator mediator) : Controller
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(CreateCustomerResult), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create(CreateCustomerCommand request)
     {
@@ -25,6 +25,7 @@ public class CustomersController(IMediator mediator) : Controller
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(UpdateCustomerResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateCustomerCommand request)
     {
@@ -40,6 +41,7 @@ public class CustomersController(IMediator mediator) : Controller
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
@@ -49,6 +51,7 @@ public class CustomersController(IMediator mediator) : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Customer")]
     [ProducesResponseType(typeof(PagedResult<GetPagedCustomerResult>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPaged([FromQuery] GetPagedCustomersCommand request)
     {

@@ -9,7 +9,6 @@ using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;
 
-[Authorize(Roles = "Admin")]
 [Route("api/products")]
 [ApiController]
 public class ProductsController(IMediator mediator) : Controller
@@ -17,6 +16,7 @@ public class ProductsController(IMediator mediator) : Controller
     private readonly IMediator _mediator = mediator;
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(CreateProductResult), StatusCodes.Status201Created)]
     public async Task<IActionResult> Create(CreateProductCommand request)
     {
@@ -25,6 +25,7 @@ public class ProductsController(IMediator mediator) : Controller
     }
 
     [HttpPut("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(UpdateProductResult), StatusCodes.Status200OK)]
     public async Task<IActionResult> Update(Guid id, [FromBody] UpdateProductCommand request)
     {
@@ -40,6 +41,7 @@ public class ProductsController(IMediator mediator) : Controller
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(typeof(object), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Delete(Guid id)
@@ -49,6 +51,7 @@ public class ProductsController(IMediator mediator) : Controller
     }
 
     [HttpGet]
+    [Authorize(Roles = "Admin,Customer")]
     [ProducesResponseType(typeof(PagedResult<GetPagedProductResult>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPaged([FromQuery] GetPagedProductsCommand request)
     {
