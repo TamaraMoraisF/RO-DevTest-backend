@@ -1,20 +1,20 @@
 ﻿using FluentAssertions;
 using Moq;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
-using RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+using RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 using CustomerEntity = RO.DevTest.Domain.Entities.Customer;
 using ProductEntity = RO.DevTest.Domain.Entities.Product;
 using SaleEntity = RO.DevTest.Domain.Entities.Sale;
 using SaleItemEntity = RO.DevTest.Domain.Entities.SaleItem;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Queries;
+namespace RO.DevTest.Tests.Unit.Application.Features.Sale.Commands;
 
-public class GetSalesAnalyticsQueryHandlerTests
+public class GetSalesAnalyticsCommandHandlerTests
 {
     private readonly Mock<ISaleRepository> _saleRepoMock;
-    private readonly GetSalesAnalyticsQueryHandler _handler;
+    private readonly GetSalesAnalyticsCommandHandler _handler;
 
-    public GetSalesAnalyticsQueryHandlerTests()
+    public GetSalesAnalyticsCommandHandlerTests()
     {
         _saleRepoMock = new();
 
@@ -57,13 +57,13 @@ public class GetSalesAnalyticsQueryHandlerTests
         }.AsQueryable();
 
         _saleRepoMock.Setup(r => r.Query()).Returns(fakeSales);
-        _handler = new GetSalesAnalyticsQueryHandler(_saleRepoMock.Object);
+        _handler = new GetSalesAnalyticsCommandHandler(_saleRepoMock.Object);
     }
 
     [Fact]
     public async Task ShouldReturnCorrectTotalSalesAndRevenue()
     {
-        var query = new GetSalesAnalyticsQuery(
+        var query = new GetSalesAnalyticsCommand(
             new DateTime(2025, 4, 24),
             new DateTime(2025, 4, 24)
         );
@@ -80,7 +80,7 @@ public class GetSalesAnalyticsQueryHandlerTests
     {
         _saleRepoMock.Setup(r => r.Query()).Returns(Enumerable.Empty<SaleEntity>().AsQueryable());
 
-        var query = new GetSalesAnalyticsQuery(
+        var query = new GetSalesAnalyticsCommand(
             new DateTime(2025, 1, 1),
             new DateTime(2025, 1, 1)
         );

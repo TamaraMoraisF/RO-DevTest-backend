@@ -2,16 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
+using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+namespace RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 
-public class GetSalesAnalyticsQueryHandler(ISaleRepository saleRepo)
-    : IRequestHandler<GetSalesAnalyticsQuery, SalesAnalyticsResult>
+public class GetSalesAnalyticsCommandHandler(ISaleRepository saleRepo)
+    : IRequestHandler<GetSalesAnalyticsCommand, SalesAnalyticsResult>
 {
     private readonly ISaleRepository _saleRepo = saleRepo;
 
-    public async Task<SalesAnalyticsResult> Handle(GetSalesAnalyticsQuery request, CancellationToken cancellationToken)
+    public async Task<SalesAnalyticsResult> Handle(GetSalesAnalyticsCommand request, CancellationToken cancellationToken)
     {
+        var validator = new GetSalesAnalyticsCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var startDateUtc = DateTime.SpecifyKind(request.Start, DateTimeKind.Utc);
         var endDateUtc = DateTime.SpecifyKind(request.End, DateTimeKind.Utc);
 

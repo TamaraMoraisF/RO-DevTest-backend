@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RO.DevTest.Application.Features.Product.Commands.CreateProductCommand;
 using RO.DevTest.Application.Features.Product.Commands.DeleteProductCommand;
+using RO.DevTest.Application.Features.Product.Commands.GetPagedProductsCommand;
 using RO.DevTest.Application.Features.Product.Commands.UpdateProductCommand;
-using RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
 using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;
@@ -49,8 +49,8 @@ public class ProductsController(IMediator mediator) : Controller
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(PagedResult<ProductResult>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPaged([FromQuery] GetPagedProductsQuery request)
+    [ProducesResponseType(typeof(PagedResult<GetPagedProductResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPaged([FromQuery] GetPagedProductsCommand request)
     {
         var result = await _mediator.Send(request);
         return Ok(result);

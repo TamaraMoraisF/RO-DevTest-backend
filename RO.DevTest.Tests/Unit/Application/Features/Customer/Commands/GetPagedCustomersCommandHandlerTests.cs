@@ -1,17 +1,17 @@
 ﻿using FluentAssertions;
 using Moq;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
-using RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
+using RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 using CustomerEntity = RO.DevTest.Domain.Entities.Customer;
 
-namespace RO.DevTest.Tests.Unit.Application.Features.Customer.Queries;
+namespace RO.DevTest.Tests.Unit.Application.Features.Customer.Commands;
 
-public class GetPagedCustomersQueryHandlerTests
+public class GetPagedCustomersCommandHandlerTests
 {
     private readonly Mock<ICustomerRepository> _customerRepoMock;
-    private readonly GetPagedCustomersQueryHandler _handler;
+    private readonly GetPagedCustomersCommandHandler _handler;
 
-    public GetPagedCustomersQueryHandlerTests()
+    public GetPagedCustomersCommandHandlerTests()
     {
         _customerRepoMock = new();
 
@@ -25,14 +25,14 @@ public class GetPagedCustomersQueryHandlerTests
         _customerRepoMock.Setup(repo => repo.Query())
             .Returns(fakeData);
 
-        _handler = new GetPagedCustomersQueryHandler(_customerRepoMock.Object);
+        _handler = new GetPagedCustomersCommandHandler(_customerRepoMock.Object);
     }
 
     [Fact(DisplayName = "Given search term 'ana', when querying, should return filtered and paged result")]
     public async Task Handle_GivenSearchTerm_ShouldFilterAndPaginate()
     {
         // Arrange
-        var query = new GetPagedCustomersQuery
+        var query = new GetPagedCustomersCommand
         {
             Search = "ana",
             Page = 1,
@@ -54,7 +54,7 @@ public class GetPagedCustomersQueryHandlerTests
     public async Task Handle_WhenNoSearchTerm_ShouldReturnAllPaged()
     {
         // Arrange
-        var query = new GetPagedCustomersQuery
+        var query = new GetPagedCustomersCommand
         {
             Page = 1,
             PageSize = 2
@@ -72,7 +72,7 @@ public class GetPagedCustomersQueryHandlerTests
     public async Task Handle_SortByNameAscending_ShouldOrderResults()
     {
         // Arrange
-        var query = new GetPagedCustomersQuery
+        var query = new GetPagedCustomersCommand
         {
             SortBy = "name",
             Descending = false,
@@ -91,7 +91,7 @@ public class GetPagedCustomersQueryHandlerTests
     public async Task Handle_SortByEmailDescending_ShouldOrderResults()
     {
         // Arrange
-        var query = new GetPagedCustomersQuery
+        var query = new GetPagedCustomersCommand
         {
             SortBy = "email",
             Descending = true,
@@ -110,7 +110,7 @@ public class GetPagedCustomersQueryHandlerTests
     public async Task Handle_WhenPaged_ShouldReturnCorrectPage()
     {
         // Arrange
-        var query = new GetPagedCustomersQuery
+        var query = new GetPagedCustomersCommand
         {
             Page = 2,
             PageSize = 2

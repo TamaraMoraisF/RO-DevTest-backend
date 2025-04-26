@@ -2,16 +2,23 @@
 using Microsoft.EntityFrameworkCore;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Models;
+using FluentValidation;
 
-namespace RO.DevTest.Application.Features.Sale.Queries.GetPagedSales;
+namespace RO.DevTest.Application.Features.Sale.Commands.GetPagedSales;
 
-public class GetPagedSalesQueryHandler(ISaleRepository saleRepo)
-    : IRequestHandler<GetPagedSalesQuery, PagedResult<SaleResult>>
+public class GetPagedSalesCommandHandler(ISaleRepository saleRepo)
+    : IRequestHandler<GetPagedSalesCommand, PagedResult<SaleResult>>
 {
     private readonly ISaleRepository _saleRepo = saleRepo;
 
-    public async Task<PagedResult<SaleResult>> Handle(GetPagedSalesQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<SaleResult>> Handle(GetPagedSalesCommand request, CancellationToken cancellationToken)
     {
+        var validator = new GetPagedSalesCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var query = _saleRepo.Query()
             .Include(s => s.Customer)
             .Include(s => s.Items)

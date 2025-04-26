@@ -1,16 +1,23 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Models;
 
-namespace RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
+namespace RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 
-public class GetPagedCustomersQueryHandler(ICustomerRepository customerRepo)
-    : IRequestHandler<GetPagedCustomersQuery, PagedResult<CustomerResult>>
+public class GetPagedCustomersCommandHandler(ICustomerRepository customerRepo)
+    : IRequestHandler<GetPagedCustomersCommand, PagedResult<GetPagedCustomerResult>>
 {
     private readonly ICustomerRepository _customerRepo = customerRepo;
 
-    public async Task<PagedResult<CustomerResult>> Handle(GetPagedCustomersQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<GetPagedCustomerResult>> Handle(GetPagedCustomersCommand request, CancellationToken cancellationToken)
     {
+        var validator = new GetPagedCustomersCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var query = _customerRepo.Query();
 
         if (!string.IsNullOrWhiteSpace(request.Search))
@@ -33,7 +40,7 @@ public class GetPagedCustomersQueryHandler(ICustomerRepository customerRepo)
         var items = query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
-            .Select(c => new CustomerResult
+            .Select(c => new GetPagedCustomerResult
             {
                 Id = c.Id.ToString(),
                 Name = c.Name,
@@ -41,7 +48,7 @@ public class GetPagedCustomersQueryHandler(ICustomerRepository customerRepo)
             })
             .ToList();
 
-        return new PagedResult<CustomerResult>
+        return new PagedResult<GetPagedCustomerResult>
         {
             Page = request.Page,
             PageSize = request.PageSize,

@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RO.DevTest.Application.Features.Customer.Commands.CreateCustomerCommand;
 using RO.DevTest.Application.Features.Customer.Commands.DeleteCustomerCommand;
+using RO.DevTest.Application.Features.Customer.Commands.GetPagedCustomersCommand;
 using RO.DevTest.Application.Features.Customer.Commands.UpdateCustomerCommand;
-using RO.DevTest.Application.Features.Customer.Queries.GetPagedCustomers;
 using RO.DevTest.Application.Models;
 
 namespace RO.DevTest.WebApi.Controllers;
@@ -49,8 +49,8 @@ public class CustomersController(IMediator mediator) : Controller
     }
 
     [HttpGet]
-    [ProducesResponseType(typeof(PagedResult<CustomerResult>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPaged([FromQuery] GetPagedCustomersQuery request)
+    [ProducesResponseType(typeof(PagedResult<GetPagedCustomerResult>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetPaged([FromQuery] GetPagedCustomersCommand request)
     {
         var result = await _mediator.Send(request);
         return Ok(result);
