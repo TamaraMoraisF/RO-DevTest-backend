@@ -14,7 +14,8 @@ public class UsersController(IMediator mediator) : Controller {
     [HttpPost]
     [ProducesResponseType(typeof(CreateUserResult), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(CreateUserResult), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> CreateUser(CreateUserCommand request) {
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand request)
+    {
         CreateUserResult response = await _mediator.Send(request);
         return Created(HttpContext.Request.GetDisplayUrl(), response);
     }

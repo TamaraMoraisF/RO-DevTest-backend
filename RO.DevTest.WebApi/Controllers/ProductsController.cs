@@ -18,7 +18,7 @@ public class ProductsController(IMediator mediator) : Controller
     [HttpPost]
     [Authorize(Roles = "Admin")]
     [ProducesResponseType(typeof(CreateProductResult), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create(CreateProductCommand request)
+    public async Task<IActionResult> Create([FromBody] CreateProductCommand request)
     {
         var result = await _mediator.Send(request);
         return CreatedAtAction(nameof(Create), result);
