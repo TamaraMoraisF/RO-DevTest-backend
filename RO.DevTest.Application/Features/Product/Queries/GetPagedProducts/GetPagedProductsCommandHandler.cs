@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using RO.DevTest.Application.Contracts.Persistance.Repositories;
 using RO.DevTest.Application.Models;
+using FluentValidation;
 
 namespace RO.DevTest.Application.Features.Product.Queries.GetPagedProducts;
 
@@ -11,6 +12,12 @@ public class GetPagedProductsCommandHandler(IProductRepository productRepo)
 
     public async Task<PagedResult<ProductResult>> Handle(GetPagedProductsCommand request, CancellationToken cancellationToken)
     {
+        var validator = new GetPagedProductsCommandValidator();
+        var validationResult = await validator.ValidateAsync(request, cancellationToken);
+
+        if (!validationResult.IsValid)
+            throw new ValidationException(validationResult.Errors);
+
         var query = _productRepo.Query();
 
         if (!string.IsNullOrWhiteSpace(request.Search))

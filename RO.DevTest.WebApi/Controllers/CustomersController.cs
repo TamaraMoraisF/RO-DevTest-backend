@@ -50,7 +50,7 @@ public class CustomersController(IMediator mediator) : Controller
 
     [HttpGet]
     [ProducesResponseType(typeof(PagedResult<CustomerResult>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPaged([FromQuery] GetPagedCustomersQuery request)
+    public async Task<IActionResult> GetPaged([FromQuery] GetPagedCustomersCommand request)
     {
         var result = await _mediator.Send(request);
         return Ok(result);
