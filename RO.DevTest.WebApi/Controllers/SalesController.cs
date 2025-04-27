@@ -37,5 +37,4 @@ public class SalesController(IMediator mediator) : Controller
         var result = await _mediator.Send(new GetSalesAnalyticsCommand(start, end));
         return Ok(result);
     }
-
 }
