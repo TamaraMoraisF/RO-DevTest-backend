@@ -15,16 +15,26 @@ public class DeleteProductCommandValidatorTests
     [Fact(DisplayName = "Should not have validation error when ID is valid")]
     public void Should_NotHaveError_WhenIdIsValid()
     {
+        // Arrange
         var command = new DeleteProductCommand { Id = Guid.NewGuid() };
+
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact(DisplayName = "Should have error when ID is empty")]
     public void Should_HaveError_WhenIdIsEmpty()
     {
+        // Arrange
         var command = new DeleteProductCommand { Id = Guid.Empty };
+
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
 }

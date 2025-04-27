@@ -33,6 +33,7 @@ public class GetPagedProductsCommandHandlerTests
     [Fact(DisplayName = "Given search 'note', when querying, should return filtered products")]
     public async Task Handle_GivenSearchTerm_ShouldFilterProducts()
     {
+        // Arrange
         var query = new GetPagedProductsCommand
         {
             Search = "note",
@@ -40,8 +41,10 @@ public class GetPagedProductsCommandHandlerTests
             PageSize = 10
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.TotalItems.Should().Be(2);
         result.Items.Should().OnlyContain(p => p.Name.ToLower().Contains("note"));
     }
@@ -49,14 +52,17 @@ public class GetPagedProductsCommandHandlerTests
     [Fact(DisplayName = "Given Page = 1 and PageSize = 2, should return first 2 items")]
     public async Task Handle_GivenPaginationPage1_ShouldReturnFirstItems()
     {
+        // Arrange
         var query = new GetPagedProductsCommand
         {
             Page = 1,
             PageSize = 2
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.TotalItems.Should().Be(5);
         result.Page.Should().Be(1);
         result.PageSize.Should().Be(2);
@@ -66,14 +72,17 @@ public class GetPagedProductsCommandHandlerTests
     [Fact(DisplayName = "Given Page = 2 and PageSize = 2, should return remaining products")]
     public async Task Handle_GivenPaginationPage2_ShouldReturnNextItems()
     {
+        // Arrange
         var query = new GetPagedProductsCommand
         {
             Page = 2,
             PageSize = 2
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.TotalItems.Should().Be(5);
         result.Page.Should().Be(2);
         result.PageSize.Should().Be(2);
@@ -83,6 +92,7 @@ public class GetPagedProductsCommandHandlerTests
     [Fact(DisplayName = "Given SortBy 'name' ascending, should return sorted result")]
     public async Task Handle_GivenSortByNameAsc_ShouldSortCorrectly()
     {
+        // Arrange
         var query = new GetPagedProductsCommand
         {
             SortBy = "name",
@@ -91,14 +101,17 @@ public class GetPagedProductsCommandHandlerTests
             PageSize = 10
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Items.Should().BeInAscendingOrder(p => p.Name);
     }
 
     [Fact(DisplayName = "Given SortBy 'price' descending, should return sorted result")]
     public async Task Handle_GivenSortByPriceDesc_ShouldSortCorrectly()
     {
+        // Arrange
         var query = new GetPagedProductsCommand
         {
             SortBy = "price",
@@ -107,8 +120,10 @@ public class GetPagedProductsCommandHandlerTests
             PageSize = 10
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Items.Should().BeInDescendingOrder(p => p.Price);
     }
 }

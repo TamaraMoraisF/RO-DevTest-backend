@@ -60,24 +60,28 @@ public class GetSalesAnalyticsCommandHandlerTests
         _handler = new GetSalesAnalyticsCommandHandler(_saleRepoMock.Object);
     }
 
-    [Fact]
+    [Fact(DisplayName = "Should return correct total sales and revenue")]
     public async Task ShouldReturnCorrectTotalSalesAndRevenue()
     {
+        // Arrange
         var query = new GetSalesAnalyticsCommand(
             new DateTime(2025, 4, 24),
             new DateTime(2025, 4, 24)
         );
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.TotalSales.Should().Be(2);
         result.TotalRevenue.Should().Be(250);
         result.ProductRevenueBreakdown.Should().HaveCount(2);
     }
 
-    [Fact]
+    [Fact(DisplayName = "Should return empty when no sales in period")]
     public async Task ShouldReturnEmptyWhenNoSalesInPeriod()
     {
+        // Arrange
         _saleRepoMock.Setup(r => r.Query()).Returns(Enumerable.Empty<SaleEntity>().AsQueryable());
 
         var query = new GetSalesAnalyticsCommand(
@@ -85,8 +89,10 @@ public class GetSalesAnalyticsCommandHandlerTests
             new DateTime(2025, 1, 1)
         );
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.TotalSales.Should().Be(0);
         result.TotalRevenue.Should().Be(0);
         result.ProductRevenueBreakdown.Should().BeEmpty();

@@ -21,6 +21,7 @@ public class CreateProductCommandHandlerTests
     [Fact(DisplayName = "Given valid data should create a product")]
     public async Task Handle_WhenValidData_ShouldCreateProduct()
     {
+        // Arrange
         var command = new CreateProductCommand
         {
             Name = "Notebook",
@@ -30,8 +31,10 @@ public class CreateProductCommandHandlerTests
         _productRepoMock.Setup(repo => repo.CreateAsync(It.IsAny<ProductEntity>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((ProductEntity p, CancellationToken _) => p);
 
+        // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(command.Name);
         result.Price.Should().Be(command.Price);
@@ -40,14 +43,17 @@ public class CreateProductCommandHandlerTests
     [Fact(DisplayName = "Given invalid data should throw BadRequestException")]
     public async Task Handle_WhenInvalidData_ShouldThrowBadRequestException()
     {
+        // Arrange
         var command = new CreateProductCommand
         {
             Name = "",
             Price = -10
         };
 
+        // Act
         var act = async () => await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         await act.Should().ThrowAsync<BadRequestException>();
     }
 }

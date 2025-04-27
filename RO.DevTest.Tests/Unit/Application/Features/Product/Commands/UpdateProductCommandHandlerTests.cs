@@ -23,6 +23,7 @@ public class UpdateProductCommandHandlerTests
     [Fact(DisplayName = "Given valid data should update a product")]
     public async Task Should_Update_Product_When_Data_Is_Valid()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -38,8 +39,10 @@ public class UpdateProductCommandHandlerTests
         _mockRepo.Setup(r => r.Update(It.IsAny<ProductEntity>(), It.IsAny<CancellationToken>()))
                  .Returns(Task.CompletedTask);
 
+        // Act
         var result = await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(command.Name);
         result.Price.Should().Be(command.Price);
@@ -48,23 +51,29 @@ public class UpdateProductCommandHandlerTests
     [Fact(DisplayName = "Given invalid data should throw BadRequestException")]
     public async Task Should_Throw_BadRequest_When_Validation_Fails()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand { Id = Guid.Empty, Name = "", Price = -50 };
 
+        // Act
         var act = async () => await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         await act.Should().ThrowAsync<BadRequestException>();
     }
 
     [Fact(DisplayName = "Given product not found should throw NotFoundException")]
     public async Task Should_Throw_NotFound_When_Product_Not_Found()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand { Id = Guid.NewGuid(), Name = "Test", Price = 10 };
 
         _mockRepo.Setup(r => r.Get(It.IsAny<Expression<Func<ProductEntity, bool>>>()))
                  .Returns((ProductEntity)null!);
 
+        // Act
         var act = async () => await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         await act.Should().ThrowAsync<NotFoundException>();
     }
 }

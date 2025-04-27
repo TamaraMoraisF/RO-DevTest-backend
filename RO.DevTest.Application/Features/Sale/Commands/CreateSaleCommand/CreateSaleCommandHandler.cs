@@ -24,23 +24,28 @@ public class CreateSaleCommandHandler(
 
         var customer = _customerRepository.Get(c => c.Id == request.CustomerId)
             ?? throw new NotFoundException(nameof(Customer), request.CustomerId);
-        
+
         var productIds = request.Items.Select(i => i.ProductId).Distinct().ToList();
-        foreach (var productId in productIds)
+        var products = _productRepository.Query().Where(p => productIds.Contains(p.Id)).ToList();
+
+        if (products.Count != productIds.Count)
+            throw new NotFoundException(nameof(Product), "Some products were not found");
+
+        var saleItems = request.Items.Select(i =>
         {
-            var productExists = _productRepository.Get(p => p.Id == productId)
-                ?? throw new NotFoundException(nameof(Product), productId);
-        }
+            var product = products.First(p => p.Id == i.ProductId);
+            return new SaleItem
+            {
+                ProductId = i.ProductId,
+                Quantity = i.Quantity,
+                UnitPrice = product.Price
+            };
+        }).ToList();
 
         var sale = new Domain.Entities.Sale
         {
             CustomerId = request.CustomerId,
-            Items = [.. request.Items.Select(i => new SaleItem
-            {
-                ProductId = i.ProductId,
-                Quantity = i.Quantity,
-                UnitPrice = i.UnitPrice
-            })]
+            Items = saleItems
         };
 
         await _saleRepository.CreateAsync(sale, cancellationToken);

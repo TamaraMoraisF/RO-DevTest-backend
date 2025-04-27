@@ -13,7 +13,6 @@ public class CreateSaleCommandValidator : AbstractValidator<CreateSaleCommand>
         {
             items.RuleFor(i => i.ProductId).NotEmpty().WithMessage("ProductId is required.");
             items.RuleFor(i => i.Quantity).GreaterThan(0).WithMessage("Quantity must be greater than zero.");
-            items.RuleFor(i => i.UnitPrice).GreaterThanOrEqualTo(0).WithMessage("UnitPrice must be non-negative.");
         });
 
         RuleFor(x => x.Items)

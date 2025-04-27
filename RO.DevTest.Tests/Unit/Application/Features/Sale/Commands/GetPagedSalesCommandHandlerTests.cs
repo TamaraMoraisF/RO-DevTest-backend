@@ -57,14 +57,17 @@ public class GetPagedSalesCommandHandlerTests
     [Fact(DisplayName = "Given sales, when paginating, should return correct page")]
     public async Task Handle_WhenPaginating_ShouldReturnCorrectPage()
     {
+        // Arrange
         var query = new GetPagedSalesCommand
         {
             Page = 1,
             PageSize = 2
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Should().NotBeNull();
         result.Items.Should().HaveCount(2);
         result.TotalItems.Should().Be(4);
@@ -74,14 +77,17 @@ public class GetPagedSalesCommandHandlerTests
     [Fact(DisplayName = "Given sales, when paginating to page 2, should return remaining items")]
     public async Task Handle_WhenPaginatingToPage2_ShouldReturnRemainingItems()
     {
+        // Arrange
         var query = new GetPagedSalesCommand
         {
             Page = 2,
             PageSize = 2
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Should().NotBeNull();
         result.Page.Should().Be(2);
         result.PageSize.Should().Be(2);
@@ -91,6 +97,7 @@ public class GetPagedSalesCommandHandlerTests
     [Fact(DisplayName = "Given sales, when sorting by customer ascending, should return ordered list")]
     public async Task Handle_WhenSortingByCustomerAsc_ShouldReturnOrdered()
     {
+        // Arrange
         var query = new GetPagedSalesCommand
         {
             SortBy = "customer",
@@ -99,14 +106,17 @@ public class GetPagedSalesCommandHandlerTests
             PageSize = 10
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Items.Should().BeInAscendingOrder(s => s.CustomerName);
     }
 
     [Fact(DisplayName = "Given sales, when sorting by sale date descending, should return ordered list")]
     public async Task Handle_WhenSortingBySaleDateDesc_ShouldReturnOrdered()
     {
+        // Arrange
         var query = new GetPagedSalesCommand
         {
             SortBy = "saledate",
@@ -115,14 +125,17 @@ public class GetPagedSalesCommandHandlerTests
             PageSize = 10
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Items.Should().BeInDescendingOrder(s => s.SaleDate);
     }
 
     [Fact(DisplayName = "Given sales, when sorting by total descending, should return ordered list")]
     public async Task Handle_WhenSortingByTotalDesc_ShouldReturnOrdered()
     {
+        // Arrange
         var query = new GetPagedSalesCommand
         {
             SortBy = "total",
@@ -131,8 +144,10 @@ public class GetPagedSalesCommandHandlerTests
             PageSize = 10
         };
 
+        // Act
         var result = await _handler.Handle(query, CancellationToken.None);
 
+        // Assert
         result.Items.Should().BeInDescendingOrder(s => s.Total);
     }
 }

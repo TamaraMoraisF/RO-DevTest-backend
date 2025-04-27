@@ -15,6 +15,7 @@ public class UpdateProductCommandValidatorTests
     [Fact(DisplayName = "Should not have validation errors when data is valid")]
     public void Should_NotHaveValidationErrors_WhenDataIsValid()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -22,13 +23,17 @@ public class UpdateProductCommandValidatorTests
             Price = 2999.99M
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact(DisplayName = "Should have error when Id is empty")]
     public void Should_HaveError_WhenIdIsEmpty()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand
         {
             Id = Guid.Empty,
@@ -36,13 +41,17 @@ public class UpdateProductCommandValidatorTests
             Price = 1999.99M
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
 
     [Fact(DisplayName = "Should have error when Name is empty")]
     public void Should_HaveError_WhenNameIsEmpty()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -50,13 +59,17 @@ public class UpdateProductCommandValidatorTests
             Price = 100
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
 
     [Fact(DisplayName = "Should have error when Price is negative")]
     public void Should_HaveError_WhenPriceIsNegative()
     {
+        // Arrange
         var command = new UpdateProductWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -64,7 +77,10 @@ public class UpdateProductCommandValidatorTests
             Price = -5
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Price);
     }
 }

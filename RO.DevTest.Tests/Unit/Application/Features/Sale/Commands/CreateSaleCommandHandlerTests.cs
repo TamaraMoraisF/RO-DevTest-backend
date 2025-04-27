@@ -35,6 +35,7 @@ public class CreateSaleCommandHandlerTests
         // Arrange
         var customerId = Guid.NewGuid();
         var productId = Guid.NewGuid();
+        var productPrice = 100m;
 
         var command = new CreateSaleCommand
         {
@@ -42,19 +43,21 @@ public class CreateSaleCommandHandlerTests
             Items =
             [
                 new SaleItemDto
-                {
-                    ProductId = productId,
-                    Quantity = 2,
-                    UnitPrice = 100
-                }
+            {
+                ProductId = productId,
+                Quantity = 2
+            }
             ]
         };
 
         _customerRepoMock.Setup(r => r.Get(It.IsAny<Expression<Func<CustomerEntity, bool>>>()))
             .Returns(new CustomerEntity { Id = customerId });
 
-        _productRepoMock.Setup(r => r.Get(It.IsAny<Expression<Func<ProductEntity, bool>>>()))
-            .Returns(new ProductEntity { Id = productId });
+        _productRepoMock.Setup(r => r.Query())
+            .Returns(new List<ProductEntity>
+            {
+                new() { Id = productId, Price = productPrice }
+            }.AsQueryable());
 
         _saleRepoMock.Setup(repo => repo.CreateAsync(It.IsAny<SaleEntity>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync((SaleEntity sale, CancellationToken _) => sale);
@@ -65,7 +68,7 @@ public class CreateSaleCommandHandlerTests
         // Assert
         result.Should().NotBeNull();
         result.CustomerId.Should().Be(customerId);
-        result.Total.Should().Be(200);
+        result.Total.Should().Be(2 * productPrice);
     }
 
     [Fact(DisplayName = "Given invalid data should throw BadRequestException")]
@@ -93,8 +96,7 @@ public class CreateSaleCommandHandlerTests
                 new SaleItemDto
                 {
                     ProductId = Guid.NewGuid(),
-                    Quantity = 1,
-                    UnitPrice = 10
+                    Quantity = 1
                 }
             ]
         };
@@ -121,8 +123,7 @@ public class CreateSaleCommandHandlerTests
                 new SaleItemDto
                 {
                     ProductId = productId,
-                    Quantity = 1,
-                    UnitPrice = 10
+                    Quantity = 1
                 }
             ]
         };
