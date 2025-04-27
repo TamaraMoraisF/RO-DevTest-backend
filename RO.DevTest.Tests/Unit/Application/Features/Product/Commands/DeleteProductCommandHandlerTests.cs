@@ -22,6 +22,7 @@ public class DeleteProductCommandHandlerTests
     [Fact(DisplayName = "Given valid ID should delete the product")]
     public async Task Should_Delete_Product_When_Id_Is_Valid()
     {
+        // Arrange
         var productId = Guid.NewGuid();
         var existingProduct = new ProductEntity { Id = productId, Name = "Monitor", Price = 699.99M };
 
@@ -33,21 +34,26 @@ public class DeleteProductCommandHandlerTests
 
         var command = new DeleteProductCommand { Id = productId };
 
+        // Act
         await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         _repoMock.Verify(r => r.Delete(existingProduct, It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [Fact(DisplayName = "Given non-existent ID should throw NotFoundException")]
     public async Task Should_Throw_NotFound_When_Product_Does_Not_Exist()
     {
+        // Arrange
         var command = new DeleteProductCommand { Id = Guid.NewGuid() };
 
         _repoMock.Setup(r => r.Get(It.IsAny<Expression<Func<ProductEntity, bool>>>()))
                  .Returns((ProductEntity)null!);
 
+        // Act
         var act = async () => await _handler.Handle(command, CancellationToken.None);
 
+        // Assert
         await act.Should().ThrowAsync<NotFoundException>();
     }
 }

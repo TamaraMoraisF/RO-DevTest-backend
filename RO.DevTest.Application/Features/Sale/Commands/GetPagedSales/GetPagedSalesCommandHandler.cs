@@ -19,36 +19,31 @@ public class GetPagedSalesCommandHandler(ISaleRepository saleRepo)
         if (!validationResult.IsValid)
             throw new ValidationException(validationResult.Errors);
 
-        var query = _saleRepo.Query()
+        IQueryable<Domain.Entities.Sale> query = _saleRepo.Query()
             .Include(s => s.Customer)
             .Include(s => s.Items)
                 .ThenInclude(i => i.Product);
 
-        var list = query.ToList();
-
         if (!string.IsNullOrWhiteSpace(request.SortBy))
         {
-            list = request.SortBy.ToLower() switch
+            query = request.SortBy.ToLower() switch
             {
                 "customer" => request.Descending
-                    ? [.. list.OrderByDescending(s => s.Customer.Name)]
-                    : [.. list.OrderBy(s => s.Customer.Name)],
-
+                    ? query.OrderByDescending(s => s.Customer.Name)
+                    : query.OrderBy(s => s.Customer.Name),
                 "saledate" => request.Descending
-                    ? [.. list.OrderByDescending(s => s.SaleDate)]
-                    : [.. list.OrderBy(s => s.SaleDate)],
-
+                    ? query.OrderByDescending(s => s.SaleDate)
+                    : query.OrderBy(s => s.SaleDate),
                 "total" => request.Descending
-                    ? [.. list.OrderByDescending(s => s.TotalAmount)]
-                    : [.. list.OrderBy(s => s.TotalAmount)],
-
-                _ => list
+                    ? query.OrderByDescending(s => s.TotalAmount)
+                    : query.OrderBy(s => s.TotalAmount),
+                _ => query
             };
         }
 
-        var totalItems = list.Count;
+        var totalItems = query.Count();
 
-        var items = list
+        var items = query
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .Select(s => new SaleResult
@@ -57,12 +52,12 @@ public class GetPagedSalesCommandHandler(ISaleRepository saleRepo)
                 CustomerName = s.Customer.Name,
                 SaleDate = s.SaleDate,
                 Total = s.TotalAmount,
-                Items = [.. s.Items.Select(i => new SaleItemResult
+                Items = s.Items.Select(i => new SaleItemResult
                 {
                     ProductName = i.Product.Name,
                     Quantity = i.Quantity,
                     UnitPrice = i.UnitPrice
-                })]
+                }).ToList()
             })
             .ToList();
 

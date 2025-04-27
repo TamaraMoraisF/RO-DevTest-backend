@@ -15,6 +15,7 @@ public class UpdateCustomerCommandValidatorTests
     [Fact(DisplayName = "Given valid data should not have validation errors")]
     public void Should_NotHaveValidationErrors_WhenDataIsValid()
     {
+        // Arrange
         var command = new UpdateCustomerWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -22,13 +23,17 @@ public class UpdateCustomerCommandValidatorTests
             Email = "ana@email.com"
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact(DisplayName = "Given invalid name and email should have validation errors")]
     public void Should_HaveValidationErrors_WhenNameAndEmailAreInvalid()
     {
+        // Arrange
         var command = new UpdateCustomerWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -36,7 +41,10 @@ public class UpdateCustomerCommandValidatorTests
             Email = "invalid-email"
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
         result.ShouldHaveValidationErrorFor(x => x.Email);
     }
@@ -44,6 +52,7 @@ public class UpdateCustomerCommandValidatorTests
     [Fact(DisplayName = "Given invalid ID should have validation error")]
     public void Should_HaveValidationError_WhenIdIsZero()
     {
+        // Arrange
         var command = new UpdateCustomerWithIdCommand
         {
             Id = Guid.Empty,
@@ -51,13 +60,17 @@ public class UpdateCustomerCommandValidatorTests
             Email = "ana@email.com"
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
 
     [Fact(DisplayName = "Given invalid Name should have validation error")]
-    public void Should_HaveValidationError_WhenNameIsrequired()
+    public void Should_HaveValidationError_WhenNameIsRequired()
     {
+        // Arrange
         var command = new UpdateCustomerWithIdCommand
         {
             Id = Guid.NewGuid(),
@@ -65,7 +78,10 @@ public class UpdateCustomerCommandValidatorTests
             Email = "ana@email.com"
         };
 
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Name);
     }
 }

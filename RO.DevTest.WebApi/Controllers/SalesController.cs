@@ -16,7 +16,7 @@ public class SalesController(IMediator mediator) : Controller
 
     [HttpPost]
     [ProducesResponseType(typeof(CreateSaleResult), StatusCodes.Status201Created)]
-    public async Task<IActionResult> Create(CreateSaleCommand request)
+    public async Task<IActionResult> Create([FromBody] CreateSaleCommand request)
     {
         var result = await _mediator.Send(request);
         return CreatedAtAction(nameof(Create), result);
@@ -37,5 +37,4 @@ public class SalesController(IMediator mediator) : Controller
         var result = await _mediator.Send(new GetSalesAnalyticsCommand(start, end));
         return Ok(result);
     }
-
 }

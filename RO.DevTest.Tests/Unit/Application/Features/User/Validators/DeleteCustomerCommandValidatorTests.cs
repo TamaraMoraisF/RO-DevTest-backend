@@ -15,16 +15,26 @@ public class DeleteCustomerCommandValidatorTests
     [Fact(DisplayName = "Given valid ID should not have validation error")]
     public void Should_NotHaveValidationErrors_WhenIdIsValid()
     {
+        // Arrange
         var command = new DeleteCustomerCommand { Id = Guid.NewGuid() };
+
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldNotHaveAnyValidationErrors();
     }
 
     [Fact(DisplayName = "Given zero ID should have validation error")]
     public void Should_HaveValidationError_WhenIdIsZero()
     {
+        // Arrange
         var command = new DeleteCustomerCommand { Id = Guid.Empty };
+
+        // Act
         var result = _validator.TestValidate(command);
+
+        // Assert
         result.ShouldHaveValidationErrorFor(x => x.Id);
     }
 }

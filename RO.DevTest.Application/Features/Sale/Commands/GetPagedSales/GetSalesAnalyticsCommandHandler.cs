@@ -20,7 +20,11 @@ public class GetSalesAnalyticsCommandHandler(ISaleRepository saleRepo)
             throw new ValidationException(validationResult.Errors);
 
         var startDateUtc = DateTime.SpecifyKind(request.Start, DateTimeKind.Utc);
-        var endDateUtc = DateTime.SpecifyKind(request.End, DateTimeKind.Utc);
+
+        var endDateUtc = DateTime.SpecifyKind(
+            request.End.Date.AddDays(1).AddMilliseconds(-1),
+            DateTimeKind.Utc
+        );
 
         var query = _saleRepo.Query()
             .Include(s => s.Items)
@@ -29,9 +33,9 @@ public class GetSalesAnalyticsCommandHandler(ISaleRepository saleRepo)
 
         List<Domain.Entities.Sale> sales;
 
-        if (query.Provider is IAsyncQueryProvider) 
+        if (query.Provider is IAsyncQueryProvider)
         {
-            sales = await query.ToListAsync(cancellationToken); 
+            sales = await query.ToListAsync(cancellationToken);
         }
         else
         {

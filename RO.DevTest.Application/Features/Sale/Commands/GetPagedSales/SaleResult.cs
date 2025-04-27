@@ -6,6 +6,6 @@
         public string CustomerName { get; set; } = string.Empty;
         public DateTime SaleDate { get; set; }
         public decimal Total { get; set; }
-        public List<SaleItemResult> Items { get; set; } = new();
+        public List<SaleItemResult> Items { get; set; } = [];
     }
 }
