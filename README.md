@@ -43,7 +43,7 @@ Interactive API documentation is available via Swagger:
 ``` bash
 https://localhost:7014/swagger
 ```
-![alt text](image.png)
+![alt text](demo.gif)
 
 ## 🧪 Running Tests
 Unit tests are located in the `RO.DevTest.Tests.Unit` project. To run them:
